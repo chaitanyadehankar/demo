@@ -114,7 +114,7 @@ public class DaoRepo {
 	}
 
 	@Transactional
-	public void bookSeats(RequestBean bean) {
+	public String bookSeats(RequestBean bean) {
 		System.out.println("Request Bean = " + bean.toString());
 		Query q1 = em.createNativeQuery("select * from Booking where booking_date = ? and schedule_id = ?",
 				Booking.class);
@@ -127,6 +127,7 @@ public class DaoRepo {
 			if (booking.getAvailableSeats() - bean.getSeatNumbers().size() > 0) {
 				if (booking.getBookedSeats().removeAll(bean.getSeatNumbers())) {
 					System.out.println("Overlapping Seats !!");
+					return "Overlapping Seats . Please select available seats only";
 				} else {
 //					em.getTransaction().begin();
 					booking.setAvailableSeats(booking.getAvailableSeats() - bean.getSeatNumbers().size());
@@ -134,10 +135,13 @@ public class DaoRepo {
 					em.persist(booking);
 //					em.getTransaction().commit();
 					System.out.println("Booking Done !!!!!!!");
+					return "Booking Done !!!";
 				}
 			} else {
-				System.out.println("Selected seats are greater than available");
+				System.out.println("Selected seats are greater than available Seats");
+				return "Selected seats are greater than available seats .";
 			}
 		}
+		return "";
 	}
 }

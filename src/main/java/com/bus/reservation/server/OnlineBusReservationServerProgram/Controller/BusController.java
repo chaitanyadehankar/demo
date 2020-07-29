@@ -16,7 +16,7 @@ import com.bus.reservation.server.OnlineBusReservationServerProgram.model.Schedu
 import com.bus.reservation.server.OnlineBusReservationServerProgram.repository.DaoRepo;
 
 @RestController
-public class Home {
+public class BusController {
 
 	@Autowired
 	DaoRepo dao;
@@ -38,7 +38,7 @@ public class Home {
 	}
 
 	@PostMapping("/bookSeats/")
-	public void bookSeats(@RequestBody RequestBean reqBean) {
-		dao.bookSeats(reqBean);
+	public String bookSeats(@RequestBody RequestBean reqBean) {
+		return dao.bookSeats(reqBean);
 	}
 }
